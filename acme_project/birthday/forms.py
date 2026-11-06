@@ -17,10 +17,12 @@ class BirthdayForm(forms.ModelForm):
         return first_name.split()[0]
 
     def clean(self):
-        first_name = cleaned_data.get('first_name')
-        last_name = cleaned_data.get('last_name')
+        first_name = self.cleaned_data.get('first_name', '')
+        last_name = self.cleaned_data.get('last_name', '')
         if f'{first_name} {last_name}' in BEATLES:
-            raise ValidationError('Мы тоже любим Битлз, но введите, пожалуйста, настоящее имя!')
+            raise ValidationError(
+                'Мы тоже любим Битлз, но введите, пожалуйста, настоящее имя!'
+            )
 
     first_name = forms.CharField(label='Имя', max_length=20)
     last_name = forms.CharField(
